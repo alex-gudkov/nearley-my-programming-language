@@ -18,12 +18,29 @@ var grammar = {
         (d) => [d[1]]
           },
     {"name": "statements", "symbols": ["_", "statement", "__", "statements"], "postprocess": 
-        // "PRINT 10; 
-        //  PRINT 20;" -> d = [ null, {...}, "\n", [ {...} ] ]
+        // "PRINT 10;
+        //  PRINT 20;"
+        // -> d = [ null, {...}, "\n", [...] ]
         (d) => [d[1], ...d[3]]
           },
     {"name": "statement", "symbols": ["variableAssignment"], "postprocess": id},
     {"name": "statement", "symbols": ["printStatement"], "postprocess": id},
+    {"name": "statement", "symbols": ["whileStatement"], "postprocess": id},
+    {"name": "whileStatement$string$1", "symbols": [{"literal":"W"}, {"literal":"H"}, {"literal":"I"}, {"literal":"L"}, {"literal":"E"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "whileStatement$string$2", "symbols": [{"literal":"B"}, {"literal":"E"}, {"literal":"G"}, {"literal":"I"}, {"literal":"N"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "whileStatement$string$3", "symbols": [{"literal":"E"}, {"literal":"N"}, {"literal":"D"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "whileStatement", "symbols": ["whileStatement$string$1", "__", "expression", "__", "whileStatement$string$2", "__", "statements", "__", "whileStatement$string$3"], "postprocess": 
+        // "WHILE x LESS 10
+        //  BEGIN
+        //  PRINT x;
+        //  END"
+        // -> d = [ "WHILE", null, {...}, null, "BEGIN", null, [...], null, "END" ]
+        (d) => ({
+          type: "WhileStatement",
+          condition: d[2],
+          body: d[6]
+        })
+          },
     {"name": "printStatement$string$1", "symbols": [{"literal":"P"}, {"literal":"R"}, {"literal":"I"}, {"literal":"N"}, {"literal":"T"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "printStatement", "symbols": ["printStatement$string$1", "__", "expression", "_", {"literal":";"}], "postprocess": 
         // "PRINT 10;" -> d = [ "PRINT", null, "10", null, ";" ]
@@ -59,10 +76,22 @@ var grammar = {
     {"name": "operator", "symbols": ["operator$string$1"], "postprocess": id},
     {"name": "operator$string$2", "symbols": [{"literal":"M"}, {"literal":"I"}, {"literal":"N"}, {"literal":"U"}, {"literal":"S"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "operator", "symbols": ["operator$string$2"], "postprocess": id},
-    {"name": "operator$string$3", "symbols": [{"literal":"M"}, {"literal":"U"}, {"literal":"L"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "operator$string$3", "symbols": [{"literal":"T"}, {"literal":"I"}, {"literal":"M"}, {"literal":"E"}, {"literal":"S"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "operator", "symbols": ["operator$string$3"], "postprocess": id},
-    {"name": "operator$string$4", "symbols": [{"literal":"D"}, {"literal":"I"}, {"literal":"V"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "operator$string$4", "symbols": [{"literal":"D"}, {"literal":"I"}, {"literal":"V"}, {"literal":"I"}, {"literal":"D"}, {"literal":"E"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "operator", "symbols": ["operator$string$4"], "postprocess": id},
+    {"name": "operator$string$5", "symbols": [{"literal":"L"}, {"literal":"E"}, {"literal":"S"}, {"literal":"S"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "operator", "symbols": ["operator$string$5"], "postprocess": id},
+    {"name": "operator$string$6", "symbols": [{"literal":"G"}, {"literal":"R"}, {"literal":"E"}, {"literal":"A"}, {"literal":"T"}, {"literal":"E"}, {"literal":"R"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "operator", "symbols": ["operator$string$6"], "postprocess": id},
+    {"name": "operator$string$7", "symbols": [{"literal":"E"}, {"literal":"Q"}, {"literal":"U"}, {"literal":"A"}, {"literal":"L"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "operator", "symbols": ["operator$string$7"], "postprocess": id},
+    {"name": "operator$string$8", "symbols": [{"literal":"N"}, {"literal":"O"}, {"literal":"T"}, {"literal":"_"}, {"literal":"E"}, {"literal":"Q"}, {"literal":"U"}, {"literal":"A"}, {"literal":"L"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "operator", "symbols": ["operator$string$8"], "postprocess": id},
+    {"name": "operator$string$9", "symbols": [{"literal":"L"}, {"literal":"E"}, {"literal":"S"}, {"literal":"S"}, {"literal":"_"}, {"literal":"O"}, {"literal":"R"}, {"literal":"_"}, {"literal":"E"}, {"literal":"Q"}, {"literal":"U"}, {"literal":"A"}, {"literal":"L"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "operator", "symbols": ["operator$string$9"], "postprocess": id},
+    {"name": "operator$string$10", "symbols": [{"literal":"G"}, {"literal":"R"}, {"literal":"E"}, {"literal":"A"}, {"literal":"T"}, {"literal":"E"}, {"literal":"R"}, {"literal":"_"}, {"literal":"O"}, {"literal":"R"}, {"literal":"_"}, {"literal":"E"}, {"literal":"Q"}, {"literal":"U"}, {"literal":"A"}, {"literal":"L"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "operator", "symbols": ["operator$string$10"], "postprocess": id},
     {"name": "identifier$ebnf$1", "symbols": [/[a-z]/]},
     {"name": "identifier$ebnf$1", "symbols": ["identifier$ebnf$1", /[a-z]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "identifier", "symbols": ["identifier$ebnf$1"], "postprocess": 

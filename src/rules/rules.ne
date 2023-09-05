@@ -9,14 +9,30 @@ statements
     (d) => [d[1]]
   %}
   |  _ statement __ statements {%
-    // "PRINT 10; 
-    //  PRINT 20;" -> d = [ null, {...}, "\n", [ {...} ] ]
+    // "PRINT 10;
+    //  PRINT 20;"
+    // -> d = [ null, {...}, "\n", [...] ]
     (d) => [d[1], ...d[3]]
   %}
 
 statement
   -> variableAssignment {% id %}
   |  printStatement     {% id %}
+  |  whileStatement     {% id %}
+
+whileStatement
+  -> "WHILE" __ expression __ "BEGIN" __ statements __ "END" {%
+    // "WHILE x LESS 10
+    //  BEGIN
+    //  PRINT x;
+    //  END"
+    // -> d = [ "WHILE", null, {...}, null, "BEGIN", null, [...], null, "END" ]
+    (d) => ({
+      type: "WhileStatement",
+      condition: d[2],
+      body: d[6]
+    })
+  %}
 
 printStatement
   -> "PRINT" __ expression _ ";" {%
@@ -57,10 +73,16 @@ unaryExpression
   |  number     {% id %}
 
 operator
-  -> "PLUS"  {% id %}
-  |  "MINUS" {% id %}
-  |  "MUL"   {% id %}
-  |  "DIV"   {% id %}
+  -> "PLUS"             {% id %}
+  |  "MINUS"            {% id %}
+  |  "TIMES"            {% id %}
+  |  "DIVIDE"           {% id %}
+  |  "LESS"             {% id %}
+  |  "GREATER"          {% id %}
+  |  "EQUAL"            {% id %}
+  |  "NOT_EQUAL"        {% id %}
+  |  "LESS_OR_EQUAL"    {% id %}
+  |  "GREATER_OR_EQUAL" {% id %}
 
 identifier
   -> [a-z]:+ {%
