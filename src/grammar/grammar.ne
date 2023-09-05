@@ -5,7 +5,7 @@ topLevelStatement
   |  printStatement     {% id %}
 
 printStatement
-  -> "PRINT" __ number _ ";" {%
+  -> "PRINT" __ expression _ ";" {%
     // "PRINT 10;" -> d = [ "PRINT", null, "10", null, ";" ]
     (d) => ({
       type: "PrintStatement",
@@ -24,11 +24,33 @@ variableAssignment
   %}
 
 expression
+  -> unaryExpression  {% id %}
+  |  binaryExpression {% id %}
+
+binaryExpression
+  -> unaryExpression __ operator __ unaryExpression {%
+    // "10 PLUS 20" -> d = [ "10", null, "PLUS", null, "20" ]
+    (d) => ({
+      type: "BinaryExpression",
+      left: d[0],
+      operator: d[2],
+      right: d[4]
+    })
+  %}
+
+unaryExpression
   -> identifier {% id %}
   |  number     {% id %}
 
+operator
+  -> "PLUS"  {% id %}
+  |  "MINUS" {% id %}
+  |  "MUL"   {% id %}
+  |  "DIV"   {% id %}
+
 identifier
   -> [a-z]:+ {%
+    // "abc" -> d = [ [ "a", "b", "c" ] ]
     (d) => d[0].join("")
   %}
 

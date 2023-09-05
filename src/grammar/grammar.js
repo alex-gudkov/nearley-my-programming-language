@@ -15,7 +15,7 @@ var grammar = {
     {"name": "topLevelStatement", "symbols": ["variableAssignment"], "postprocess": id},
     {"name": "topLevelStatement", "symbols": ["printStatement"], "postprocess": id},
     {"name": "printStatement$string$1", "symbols": [{"literal":"P"}, {"literal":"R"}, {"literal":"I"}, {"literal":"N"}, {"literal":"T"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "printStatement", "symbols": ["printStatement$string$1", "__", "number", "_", {"literal":";"}], "postprocess": 
+    {"name": "printStatement", "symbols": ["printStatement$string$1", "__", "expression", "_", {"literal":";"}], "postprocess": 
         // "PRINT 10;" -> d = [ "PRINT", null, "10", null, ";" ]
         (d) => ({
           type: "PrintStatement",
@@ -32,11 +32,31 @@ var grammar = {
           value: d[6] 
         })
           },
-    {"name": "expression", "symbols": ["identifier"], "postprocess": id},
-    {"name": "expression", "symbols": ["number"], "postprocess": id},
+    {"name": "expression", "symbols": ["unaryExpression"], "postprocess": id},
+    {"name": "expression", "symbols": ["binaryExpression"], "postprocess": id},
+    {"name": "binaryExpression", "symbols": ["unaryExpression", "__", "operator", "__", "unaryExpression"], "postprocess": 
+        // "10 PLUS 20" -> d = [ "10", null, "PLUS", null, "20" ]
+        (d) => ({
+          type: "BinaryExpression",
+          left: d[0],
+          operator: d[2],
+          right: d[4]
+        })
+          },
+    {"name": "unaryExpression", "symbols": ["identifier"], "postprocess": id},
+    {"name": "unaryExpression", "symbols": ["number"], "postprocess": id},
+    {"name": "operator$string$1", "symbols": [{"literal":"P"}, {"literal":"L"}, {"literal":"U"}, {"literal":"S"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "operator", "symbols": ["operator$string$1"], "postprocess": id},
+    {"name": "operator$string$2", "symbols": [{"literal":"M"}, {"literal":"I"}, {"literal":"N"}, {"literal":"U"}, {"literal":"S"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "operator", "symbols": ["operator$string$2"], "postprocess": id},
+    {"name": "operator$string$3", "symbols": [{"literal":"M"}, {"literal":"U"}, {"literal":"L"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "operator", "symbols": ["operator$string$3"], "postprocess": id},
+    {"name": "operator$string$4", "symbols": [{"literal":"D"}, {"literal":"I"}, {"literal":"V"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "operator", "symbols": ["operator$string$4"], "postprocess": id},
     {"name": "identifier$ebnf$1", "symbols": [/[a-z]/]},
     {"name": "identifier$ebnf$1", "symbols": ["identifier$ebnf$1", /[a-z]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "identifier", "symbols": ["identifier$ebnf$1"], "postprocess": 
+        // "abc" -> d = [ [ "a", "b", "c" ] ]
         (d) => d[0].join("")
           },
     {"name": "number", "symbols": ["digits", {"literal":"."}, "digits"], "postprocess": 
