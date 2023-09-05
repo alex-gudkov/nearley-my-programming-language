@@ -5,26 +5,27 @@ program
 
 statements
   -> _ statement _ {%
-    // "PRINT 10;" -> d = [ null, {...}, null ]
+    // "PRINT 10"
+    // -> d = [ null, {...}, null ]
     (d) => [d[1]]
   %}
-  |  _ statement __ statements {%
-    // "PRINT 10;
-    //  PRINT 20;"
-    // -> d = [ null, {...}, "\n", [...] ]
+  |  _ statement __ statements _ {%
+    // "PRINT 10
+    //  PRINT 20"
+    // -> d = [ null, {...}, null, [...], null ]
     (d) => [d[1], ...d[3]]
   %}
 
 statement
-  -> variableAssignment {% id %}
-  |  printStatement     {% id %}
-  |  whileStatement     {% id %}
+  -> assignmentStatement {% id %}
+  |  printStatement      {% id %}
+  |  whileStatement      {% id %}
 
 whileStatement
   -> "WHILE" __ expression __ "BEGIN" __ statements __ "END" {%
     // "WHILE x LESS 10
     //  BEGIN
-    //  PRINT x;
+    //      PRINT x
     //  END"
     // -> d = [ "WHILE", null, {...}, null, "BEGIN", null, [...], null, "END" ]
     (d) => ({
@@ -35,21 +36,23 @@ whileStatement
   %}
 
 printStatement
-  -> "PRINT" __ expression _ ";" {%
-    // "PRINT 10;" -> d = [ "PRINT", null, "10", null, ";" ]
+  -> "PRINT" __ expression {%
+    // "PRINT 10"
+    // -> d = [ "PRINT", null, "10" ]
     (d) => ({
       type: "PrintStatement",
       value: d[2]
     })
   %}
 
-variableAssignment
-  -> "VAR" __ identifier __ "ASSIGN" __ expression _ ";" {%
-    // "VAR x ASSIGN 10;" -> d = [ "VAR", null, "x", null, "ASSIGN", null, "10", null, ";" ]
+assignmentStatement
+  -> identifier __ "ASSIGN" __ expression {%
+    // "x ASSIGN 10"
+    // -> d = [ "x", null, "ASSIGN", null, "10" ]
     (d) => ({
-      type: "VariableAssignment",
-      identifier: d[2],
-      value: d[6] 
+      type: "AssignmentStatement",
+      identifier: d[0],
+      value: d[4] 
     })
   %}
 
@@ -59,7 +62,8 @@ expression
 
 binaryExpression
   -> unaryExpression __ operator __ expression {%
-    // "10 PLUS 20" -> d = [ "10", null, "PLUS", null, "20" ]
+    // "10 PLUS 20"
+    // -> d = [ "10", null, "PLUS", null, "20" ]
     (d) => ({
       type: "BinaryExpression",
       left: d[0],
@@ -85,23 +89,27 @@ operator
   |  "GREATER_OR_EQUAL" {% id %}
 
 identifier
-  -> [a-z]:+ {%
-    // "abc" -> d = [ [ "a", "b", "c" ] ]
+  -> [a-z_]:+ {%
+    // "ab_c"
+    // -> d = [ [ "a", "b", "_", "c" ] ]
     (d) => d[0].join("")
   %}
 
 number
   -> digits "." digits {%
-    // "123.456" -> d = [ "123", ".", "456" ]
+    // "123.456"
+    // -> d = [ "123", ".", "456" ]
     (d) => Number(d[0] + "." + d[2])
   %}
   |  digits {%
-    // "123" -> d = [ "123" ]
+    // "123"
+    // -> d = [ "123" ]
     (d) => Number(d[0])
   %}
 
 digits
   -> [0-9]:+ {%
-    // "123" -> d = [ [ "1", "2", "3" ] ]
+    // "123"
+    // -> d = [ [ "1", "2", "3" ] ]
     (d) => d[0].join("")
   %}

@@ -23,7 +23,7 @@ function main() {
 
       parser.feed(inputFileData);
 
-      const abstractSyntaxTree = parser.results;
+      const abstractSyntaxTree = parser.results[0];
 
       // write output data
       const outputFileName = path.basename(inputFileName, '.mypl') + '.ast';
