@@ -17,7 +17,10 @@ var grammar = {
     {"name": "number", "symbols": ["digits"]},
     {"name": "digits$ebnf$1", "symbols": [/[0-9]/]},
     {"name": "digits$ebnf$1", "symbols": ["digits$ebnf$1", /[0-9]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "digits", "symbols": ["digits$ebnf$1"]}
+    {"name": "digits", "symbols": ["digits$ebnf$1"], "postprocess": 
+        // "123" -> data = [ [ "1", "2", "3" ] ]
+        (data) => data[0].join("")
+        }
 ]
   , ParserStart: "program"
 }
