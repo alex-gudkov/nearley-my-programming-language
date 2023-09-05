@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "main": "./src/main.js",
   "scripts": {
-    "grammar:compile": "nearleyc ./src/grammar/grammar.ne --out ./src/grammar/grammar.js",
+    "rules:compile": "nearleyc ./src/rules/rules.ne --out ./src/rules/rules.js",
     "start": "node ./src/main.js",
     "start:watch": "nodemon --config ./nodemon.json"
   },
