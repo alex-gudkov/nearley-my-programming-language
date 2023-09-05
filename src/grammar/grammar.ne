@@ -1,4 +1,6 @@
-program -> variable_assignment | number
+program
+  -> variable_assignment {% id %}
+  | number {% id %}
 
 variable_assignment -> "VAR" identifier "ASSIGN" number
 

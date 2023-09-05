@@ -5,8 +5,8 @@ function id(x) { return x[0]; }
 var grammar = {
     Lexer: undefined,
     ParserRules: [
-    {"name": "program", "symbols": ["variable_assignment"]},
-    {"name": "program", "symbols": ["number"]},
+    {"name": "program", "symbols": ["variable_assignment"], "postprocess": id},
+    {"name": "program", "symbols": ["number"], "postprocess": id},
     {"name": "variable_assignment$string$1", "symbols": [{"literal":"V"}, {"literal":"A"}, {"literal":"R"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "variable_assignment$string$2", "symbols": [{"literal":"A"}, {"literal":"S"}, {"literal":"S"}, {"literal":"I"}, {"literal":"G"}, {"literal":"N"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "variable_assignment", "symbols": ["variable_assignment$string$1", "identifier", "variable_assignment$string$2", "number"]},
