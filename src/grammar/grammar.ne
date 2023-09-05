@@ -1,1 +1,3 @@
-number -> [0-9]:+
+number -> digits "." digits
+
+digits -> [0-9]:+
