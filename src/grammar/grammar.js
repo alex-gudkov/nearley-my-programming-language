@@ -5,17 +5,30 @@ function id(x) { return x[0]; }
 var grammar = {
     Lexer: undefined,
     ParserRules: [
-    {"name": "main$ebnf$1$subexpression$1", "symbols": ["statement", {"literal":"\n"}]},
-    {"name": "main$ebnf$1", "symbols": ["main$ebnf$1$subexpression$1"]},
-    {"name": "main$ebnf$1$subexpression$2", "symbols": ["statement", {"literal":"\n"}]},
-    {"name": "main$ebnf$1", "symbols": ["main$ebnf$1", "main$ebnf$1$subexpression$2"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "main", "symbols": ["main$ebnf$1"]},
-    {"name": "statement$string$1", "symbols": [{"literal":"f"}, {"literal":"o"}, {"literal":"o"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "statement", "symbols": ["statement$string$1"]},
-    {"name": "statement$string$2", "symbols": [{"literal":"b"}, {"literal":"a"}, {"literal":"r"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "statement", "symbols": ["statement$string$2"]}
+    {"name": "program", "symbols": ["variable_assignment"]},
+    {"name": "program", "symbols": ["number"]},
+    {"name": "variable_assignment$string$1", "symbols": [{"literal":"V"}, {"literal":"A"}, {"literal":"R"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "variable_assignment$string$2", "symbols": [{"literal":"A"}, {"literal":"S"}, {"literal":"S"}, {"literal":"I"}, {"literal":"G"}, {"literal":"N"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "variable_assignment", "symbols": ["variable_assignment$string$1", "identifier", "variable_assignment$string$2", "number"]},
+    {"name": "identifier$ebnf$1", "symbols": [/[a-z]/]},
+    {"name": "identifier$ebnf$1", "symbols": ["identifier$ebnf$1", /[a-z]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
+    {"name": "identifier", "symbols": ["identifier$ebnf$1"]},
+    {"name": "number", "symbols": ["digits", {"literal":"."}, "digits"], "postprocess": 
+        // "123.456" -> data = [ "123", ".", "456" ]
+        (data) => Number(data[0] + "." + data[2])
+          },
+    {"name": "number", "symbols": ["digits"], "postprocess": 
+        // "123" -> data = [ "123" ]
+        (data) => Number(data[0])
+          },
+    {"name": "digits$ebnf$1", "symbols": [/[0-9]/]},
+    {"name": "digits$ebnf$1", "symbols": ["digits$ebnf$1", /[0-9]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
+    {"name": "digits", "symbols": ["digits$ebnf$1"], "postprocess": 
+        // "123" -> data = [ [ "1", "2", "3" ] ]
+        (data) => data[0].join("")
+        }
 ]
-  , ParserStart: "main"
+  , ParserStart: "program"
 }
 if (typeof module !== 'undefined'&& typeof module.exports !== 'undefined') {
    module.exports = grammar;
