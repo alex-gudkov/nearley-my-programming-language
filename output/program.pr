@@ -1,11 +1,6 @@
 [
   {
-    "type": "VariableAssignment",
-    "identifier": [
-      [
-        "x"
-      ]
-    ],
-    "value": 123.456
+    "type": "PrintStatement",
+    "value": 10
   }
 ]
