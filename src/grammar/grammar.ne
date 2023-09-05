@@ -3,18 +3,17 @@ program
   |  number             {% id %}
 
 variableAssignment
-  -> "VAR" identifier "ASSIGN" number
+  -> "VAR" __ identifier __ "ASSIGN" __ number _ ";"
   {%
-    // "VARxASSIGN123.456" -> d = [ "VAR", "x", "ASSIGN", "123.456" ]
+    // "VAR x ASSIGN 123.456;" -> d = [ "VAR", null, "x", null, "ASSIGN", null, "123.456", null, ";" ]
     (d) => ({
       type: "VariableAssignment",
-      identifier: d[1],
-      value: d[3] 
+      identifier: d[2],
+      value: d[6] 
     })
   %}
 
-identifier
-  -> [a-z]:+
+identifier -> [a-z]:+
 
 number
   -> digits "." digits {%
@@ -32,3 +31,8 @@ digits
     // "123" -> d = [ [ "1", "2", "3" ] ]
     (d) => d[0].join("")
   %}
+
+
+_ -> [ \t\n\v\f]:* {% (d) => null %}
+
+__ -> [ \t\n\v\f]:+ {% (d) => null %}

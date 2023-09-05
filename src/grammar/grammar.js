@@ -9,12 +9,12 @@ var grammar = {
     {"name": "program", "symbols": ["number"], "postprocess": id},
     {"name": "variableAssignment$string$1", "symbols": [{"literal":"V"}, {"literal":"A"}, {"literal":"R"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "variableAssignment$string$2", "symbols": [{"literal":"A"}, {"literal":"S"}, {"literal":"S"}, {"literal":"I"}, {"literal":"G"}, {"literal":"N"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "variableAssignment", "symbols": ["variableAssignment$string$1", "identifier", "variableAssignment$string$2", "number"], "postprocess": 
-        // "VARxASSIGN123.456" -> d = [ "VAR", "x", "ASSIGN", "123.456" ]
+    {"name": "variableAssignment", "symbols": ["variableAssignment$string$1", "__", "identifier", "__", "variableAssignment$string$2", "__", "number", "_", {"literal":";"}], "postprocess": 
+        // "VAR x ASSIGN 123.456;" -> d = [ "VAR", null, "x", null, "ASSIGN", null, "123.456", null, ";" ]
         (d) => ({
           type: "VariableAssignment",
-          identifier: d[1],
-          value: d[3] 
+          identifier: d[2],
+          value: d[6] 
         })
           },
     {"name": "identifier$ebnf$1", "symbols": [/[a-z]/]},
@@ -33,7 +33,13 @@ var grammar = {
     {"name": "digits", "symbols": ["digits$ebnf$1"], "postprocess": 
         // "123" -> d = [ [ "1", "2", "3" ] ]
         (d) => d[0].join("")
-          }
+          },
+    {"name": "_$ebnf$1", "symbols": []},
+    {"name": "_$ebnf$1", "symbols": ["_$ebnf$1", /[ \t\n\v\f]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
+    {"name": "_", "symbols": ["_$ebnf$1"], "postprocess": (d) => null},
+    {"name": "__$ebnf$1", "symbols": [/[ \t\n\v\f]/]},
+    {"name": "__$ebnf$1", "symbols": ["__$ebnf$1", /[ \t\n\v\f]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
+    {"name": "__", "symbols": ["__$ebnf$1"], "postprocess": (d) => null}
 ]
   , ParserStart: "program"
 }
