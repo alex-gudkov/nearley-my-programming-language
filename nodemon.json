@@ -1,0 +1,13 @@
+{
+  "ignore": [
+    "./node_modules",
+    "./output",
+    "./src/grammar/grammar.js"
+  ],
+  "watch": [
+    "./src",
+    "./input"
+  ],
+  "exec": "npm run grammar:compile && npm run start",
+  "ext": "js, mypl, ne"
+}
