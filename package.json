@@ -7,9 +7,9 @@
   "license": "UNLICENSED",
   "main": "./src/main.js",
   "scripts": {
-    "grammar:compile": "nearleyc ./src/grammar/grammar.ne -o ./src/grammar/grammar.js",
+    "grammar:compile": "nearleyc ./src/grammar/grammar.ne --out ./src/grammar/grammar.js",
     "start": "node ./src/main.js",
-    "start:watch": "nodemon"
+    "start:watch": "nodemon --config ./nodemon.json"
   },
   "dependencies": {
     "nearley": "^2.20.1"

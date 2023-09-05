@@ -2,7 +2,7 @@
   "ignore": [
     "./node_modules",
     "./output",
-    "./src/grammar/grammar.js"
+    "./src/grammar/*.js"
   ],
   "watch": [
     "./src",
