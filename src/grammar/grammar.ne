@@ -1,9 +1,17 @@
 program
   -> variableAssignment {% id %}
-  | number              {% id %}
+  |  number             {% id %}
 
 variableAssignment
   -> "VAR" identifier "ASSIGN" number
+  {%
+    // "VARxASSIGN123.456" -> d = [ "VAR", "x", "ASSIGN", "123.456" ]
+    (d) => ({
+      type: "VariableAssignment",
+      identifier: d[1],
+      value: d[3] 
+    })
+  %}
 
 identifier
   -> [a-z]:+

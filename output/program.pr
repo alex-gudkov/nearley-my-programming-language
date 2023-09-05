@@ -1,12 +1,11 @@
 [
-  [
-    "VAR",
-    [
+  {
+    "type": "VariableAssignment",
+    "identifier": [
       [
         "x"
       ]
     ],
-    "ASSIGN",
-    123.456
-  ]
+    "value": 123.456
+  }
 ]
