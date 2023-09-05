@@ -13,8 +13,14 @@ var grammar = {
     {"name": "identifier$ebnf$1", "symbols": [/[a-z]/]},
     {"name": "identifier$ebnf$1", "symbols": ["identifier$ebnf$1", /[a-z]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "identifier", "symbols": ["identifier$ebnf$1"]},
-    {"name": "number", "symbols": ["digits", {"literal":"."}, "digits"]},
-    {"name": "number", "symbols": ["digits"]},
+    {"name": "number", "symbols": ["digits", {"literal":"."}, "digits"], "postprocess": 
+        // "123.456" -> data = [ "123", ".", "456" ]
+        (data) => Number(data[0] + "." + data[2])
+          },
+    {"name": "number", "symbols": ["digits"], "postprocess": 
+        // "123" -> data = [ "123" ]
+        (data) => Number(data[0])
+          },
     {"name": "digits$ebnf$1", "symbols": [/[0-9]/]},
     {"name": "digits$ebnf$1", "symbols": ["digits$ebnf$1", /[0-9]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "digits", "symbols": ["digits$ebnf$1"], "postprocess": 
