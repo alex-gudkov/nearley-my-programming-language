@@ -1,30 +1,54 @@
 [
   {
     "type": "AssignmentStatement",
-    "identifier": "x",
-    "value": 10
+    "identifier": {
+      "type": "Identifier",
+      "name": "x"
+    },
+    "value": {
+      "type": "Literal",
+      "value": 10
+    }
   },
   {
     "type": "WhileStatement",
     "condition": {
       "type": "BinaryExpression",
-      "left": "x",
+      "left": {
+        "type": "Identifier",
+        "name": "x"
+      },
       "operator": "LESS_OR_EQUAL",
-      "right": 20
+      "right": {
+        "type": "Literal",
+        "value": 20
+      }
     },
     "body": [
       {
         "type": "PrintStatement",
-        "value": "x"
+        "value": {
+          "type": "Identifier",
+          "name": "x"
+        }
       },
       {
         "type": "AssignmentStatement",
-        "identifier": "x",
+        "identifier": {
+          "type": "Identifier",
+          "name": "x"
+        },
         "value": {
           "type": "BinaryExpression",
-          "left": "x",
+          "left": {
+            "type": "Identifier",
+            "name": "x"
+          },
           "operator": "PLUS",
-          "right": 1
+          "right": {
+            "type": "Literal",
+            "value": 1
+          }
         }
       }
     ]

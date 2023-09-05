@@ -92,19 +92,28 @@ identifier
   -> [a-z_]:+ {%
     // "ab_c"
     // -> d = [ [ "a", "b", "_", "c" ] ]
-    (d) => d[0].join("")
+    (d) => ({
+      type: "Identifier",
+      name: d[0].join("")
+    })
   %}
 
 number
   -> digits "." digits {%
     // "123.456"
     // -> d = [ "123", ".", "456" ]
-    (d) => Number(d[0] + "." + d[2])
+    (d) => ({
+      type: "Literal",
+      value: Number(d[0] + "." + d[2]),
+    })
   %}
   |  digits {%
     // "123"
     // -> d = [ "123" ]
-    (d) => Number(d[0])
+    (d) => ({
+      type: "Literal",
+      value: Number(d[0]),
+    })
   %}
 
 digits
