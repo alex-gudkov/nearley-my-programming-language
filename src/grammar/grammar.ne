@@ -1,4 +1,6 @@
-program
+@builtin "whitespace.ne"
+
+topLevelStatement
   -> variableAssignment {% id %}
   |  printStatement     {% id %}
 
@@ -38,8 +40,3 @@ digits
     // "123" -> d = [ [ "1", "2", "3" ] ]
     (d) => d[0].join("")
   %}
-
-
-_ -> [ \t\n\v\f]:* {% (d) => null %}
-
-__ -> [ \t\n\v\f]:+ {% (d) => null %}

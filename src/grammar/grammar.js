@@ -5,8 +5,15 @@ function id(x) { return x[0]; }
 var grammar = {
     Lexer: undefined,
     ParserRules: [
-    {"name": "program", "symbols": ["variableAssignment"], "postprocess": id},
-    {"name": "program", "symbols": ["printStatement"], "postprocess": id},
+    {"name": "_$ebnf$1", "symbols": []},
+    {"name": "_$ebnf$1", "symbols": ["_$ebnf$1", "wschar"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
+    {"name": "_", "symbols": ["_$ebnf$1"], "postprocess": function(d) {return null;}},
+    {"name": "__$ebnf$1", "symbols": ["wschar"]},
+    {"name": "__$ebnf$1", "symbols": ["__$ebnf$1", "wschar"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
+    {"name": "__", "symbols": ["__$ebnf$1"], "postprocess": function(d) {return null;}},
+    {"name": "wschar", "symbols": [/[ \t\n\v\f]/], "postprocess": id},
+    {"name": "topLevelStatement", "symbols": ["variableAssignment"], "postprocess": id},
+    {"name": "topLevelStatement", "symbols": ["printStatement"], "postprocess": id},
     {"name": "printStatement$string$1", "symbols": [{"literal":"P"}, {"literal":"R"}, {"literal":"I"}, {"literal":"N"}, {"literal":"T"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "printStatement", "symbols": ["printStatement$string$1", "__", "number", "_", {"literal":";"}], "postprocess": 
         // "PRINT 10;" -> d = [ "PRINT", null, "10", null, ";" ]
@@ -41,15 +48,9 @@ var grammar = {
     {"name": "digits", "symbols": ["digits$ebnf$1"], "postprocess": 
         // "123" -> d = [ [ "1", "2", "3" ] ]
         (d) => d[0].join("")
-          },
-    {"name": "_$ebnf$1", "symbols": []},
-    {"name": "_$ebnf$1", "symbols": ["_$ebnf$1", /[ \t\n\v\f]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "_", "symbols": ["_$ebnf$1"], "postprocess": (d) => null},
-    {"name": "__$ebnf$1", "symbols": [/[ \t\n\v\f]/]},
-    {"name": "__$ebnf$1", "symbols": ["__$ebnf$1", /[ \t\n\v\f]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "__", "symbols": ["__$ebnf$1"], "postprocess": (d) => null}
+          }
 ]
-  , ParserStart: "program"
+  , ParserStart: "topLevelStatement"
 }
 if (typeof module !== 'undefined'&& typeof module.exports !== 'undefined') {
    module.exports = grammar;
