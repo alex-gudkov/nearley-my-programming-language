@@ -2,12 +2,12 @@
   "ignore": [
     "./node_modules",
     "./output",
-    "./src/grammar/*.js"
+    "./src/rules/*.js"
   ],
   "watch": [
     "./src",
     "./input"
   ],
-  "exec": "npm run grammar:compile && npm run start",
+  "exec": "npm run rules:compile && npm run start",
   "ext": "js, mypl, ne"
 }
