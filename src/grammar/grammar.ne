@@ -28,7 +28,7 @@ expression
   |  binaryExpression {% id %}
 
 binaryExpression
-  -> unaryExpression __ operator __ unaryExpression {%
+  -> unaryExpression __ operator __ expression {%
     // "10 PLUS 20" -> d = [ "10", null, "PLUS", null, "20" ]
     (d) => ({
       type: "BinaryExpression",

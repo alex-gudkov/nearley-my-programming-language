@@ -34,7 +34,7 @@ var grammar = {
           },
     {"name": "expression", "symbols": ["unaryExpression"], "postprocess": id},
     {"name": "expression", "symbols": ["binaryExpression"], "postprocess": id},
-    {"name": "binaryExpression", "symbols": ["unaryExpression", "__", "operator", "__", "unaryExpression"], "postprocess": 
+    {"name": "binaryExpression", "symbols": ["unaryExpression", "__", "operator", "__", "expression"], "postprocess": 
         // "10 PLUS 20" -> d = [ "10", null, "PLUS", null, "20" ]
         (d) => ({
           type: "BinaryExpression",

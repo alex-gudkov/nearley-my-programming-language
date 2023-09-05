@@ -5,7 +5,12 @@
       "type": "BinaryExpression",
       "left": 10,
       "operator": "PLUS",
-      "right": 20
+      "right": {
+        "type": "BinaryExpression",
+        "left": 20,
+        "operator": "MUL",
+        "right": 30
+      }
     }
   }
 ]
