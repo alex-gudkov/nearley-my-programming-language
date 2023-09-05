@@ -2,15 +2,19 @@
   "name": "nearley-my-programming-language",
   "version": "1.0.0",
   "description": "",
+  "author": "alex-gudkov",
+  "private": true,
+  "license": "UNLICENSED",
   "main": "./src/main.js",
   "scripts": {
     "grammar:compile": "nearleyc ./src/grammar/grammar.ne -o ./src/grammar/grammar.js",
     "start": "node ./src/main.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "nearley": "^2.20.1"
+  },
+  "devDependencies": {
+    "@types/nearley": "^2.11.2",
+    "@types/node": "^20.5.9"
   }
 }
