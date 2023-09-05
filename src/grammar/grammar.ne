@@ -14,7 +14,7 @@ printStatement
   %}
 
 variableAssignment
-  -> "VAR" __ identifier __ "ASSIGN" __ number _ ";" {%
+  -> "VAR" __ identifier __ "ASSIGN" __ expression _ ";" {%
     // "VAR x ASSIGN 10;" -> d = [ "VAR", null, "x", null, "ASSIGN", null, "10", null, ";" ]
     (d) => ({
       type: "VariableAssignment",
@@ -23,7 +23,14 @@ variableAssignment
     })
   %}
 
-identifier -> [a-z]:+
+expression
+  -> identifier {% id %}
+  |  number     {% id %}
+
+identifier
+  -> [a-z]:+ {%
+    (d) => d[0].join("")
+  %}
 
 number
   -> digits "." digits {%

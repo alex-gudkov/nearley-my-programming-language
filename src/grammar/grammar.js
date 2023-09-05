@@ -24,7 +24,7 @@ var grammar = {
           },
     {"name": "variableAssignment$string$1", "symbols": [{"literal":"V"}, {"literal":"A"}, {"literal":"R"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "variableAssignment$string$2", "symbols": [{"literal":"A"}, {"literal":"S"}, {"literal":"S"}, {"literal":"I"}, {"literal":"G"}, {"literal":"N"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "variableAssignment", "symbols": ["variableAssignment$string$1", "__", "identifier", "__", "variableAssignment$string$2", "__", "number", "_", {"literal":";"}], "postprocess": 
+    {"name": "variableAssignment", "symbols": ["variableAssignment$string$1", "__", "identifier", "__", "variableAssignment$string$2", "__", "expression", "_", {"literal":";"}], "postprocess": 
         // "VAR x ASSIGN 10;" -> d = [ "VAR", null, "x", null, "ASSIGN", null, "10", null, ";" ]
         (d) => ({
           type: "VariableAssignment",
@@ -32,9 +32,13 @@ var grammar = {
           value: d[6] 
         })
           },
+    {"name": "expression", "symbols": ["identifier"], "postprocess": id},
+    {"name": "expression", "symbols": ["number"], "postprocess": id},
     {"name": "identifier$ebnf$1", "symbols": [/[a-z]/]},
     {"name": "identifier$ebnf$1", "symbols": ["identifier$ebnf$1", /[a-z]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "identifier", "symbols": ["identifier$ebnf$1"]},
+    {"name": "identifier", "symbols": ["identifier$ebnf$1"], "postprocess": 
+        (d) => d[0].join("")
+          },
     {"name": "number", "symbols": ["digits", {"literal":"."}, "digits"], "postprocess": 
         // "123.456" -> d = [ "123", ".", "456" ]
         (d) => Number(d[0] + "." + d[2])
