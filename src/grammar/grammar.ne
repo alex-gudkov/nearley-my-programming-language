@@ -1,23 +1,26 @@
 program
-  -> variable_assignment {% id %}
-  | number {% id %}
+  -> variableAssignment {% id %}
+  | number              {% id %}
 
-variable_assignment -> "VAR" identifier "ASSIGN" number
+variableAssignment
+  -> "VAR" identifier "ASSIGN" number
 
-identifier -> [a-z]:+
+identifier
+  -> [a-z]:+
 
 number
   -> digits "." digits {%
-    // "123.456" -> data = [ "123", ".", "456" ]
-    (data) => Number(data[0] + "." + data[2])
+    // "123.456" -> d = [ "123", ".", "456" ]
+    (d) => Number(d[0] + "." + d[2])
   %}
   | digits {%
-    // "123" -> data = [ "123" ]
-    (data) => Number(data[0])
+    // "123" -> d = [ "123" ]
+    (d) => Number(d[0])
   %}
 
-digits -> [0-9]:+
-{%
-  // "123" -> data = [ [ "1", "2", "3" ] ]
-  (data) => data[0].join("")
-%}
+digits
+  -> [0-9]:+
+  {%
+    // "123" -> d = [ [ "1", "2", "3" ] ]
+    (d) => d[0].join("")
+  %}
