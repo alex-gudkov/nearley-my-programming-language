@@ -1,2 +1,1 @@
-main -> (statement "\n"):+
-statement -> "foo" | "bar"
+number -> [0-9]:+
