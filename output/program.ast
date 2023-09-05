@@ -1,0 +1,16 @@
+[
+  {
+    "type": "PrintStatement",
+    "value": {
+      "type": "BinaryExpression",
+      "left": 10,
+      "operator": "PLUS",
+      "right": {
+        "type": "BinaryExpression",
+        "left": 20,
+        "operator": "MUL",
+        "right": 30
+      }
+    }
+  }
+]

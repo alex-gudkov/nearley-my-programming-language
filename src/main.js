@@ -17,12 +17,12 @@ function main() {
   // parse data
   parser.feed(inputFileData);
 
-  const parseResult = parser.results;
+  const abstractSyntaxTree = parser.results;
 
   // write output data
-  const outputFileName = FILE_NAME + '.pr';
+  const outputFileName = FILE_NAME + '.ast';
   const outputFilePath = path.join(__dirname, '..', 'output', outputFileName);
-  const outputFileData = JSON.stringify(parseResult, null, '  ') + '\n';
+  const outputFileData = JSON.stringify(abstractSyntaxTree, null, '  ') + '\n';
 
   fs.writeFileSync(outputFilePath, outputFileData, { encoding: 'utf-8' });
 }
