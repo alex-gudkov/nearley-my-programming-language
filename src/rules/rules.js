@@ -12,8 +12,18 @@ var grammar = {
     {"name": "__$ebnf$1", "symbols": ["__$ebnf$1", "wschar"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "__", "symbols": ["__$ebnf$1"], "postprocess": function(d) {return null;}},
     {"name": "wschar", "symbols": [/[ \t\n\v\f]/], "postprocess": id},
-    {"name": "topLevelStatement", "symbols": ["variableAssignment"], "postprocess": id},
-    {"name": "topLevelStatement", "symbols": ["printStatement"], "postprocess": id},
+    {"name": "program", "symbols": ["statements"], "postprocess": id},
+    {"name": "statements", "symbols": ["_", "statement", "_"], "postprocess": 
+        // "PRINT 10;" -> d = [ null, {...}, null ]
+        (d) => [d[1]]
+          },
+    {"name": "statements", "symbols": ["_", "statement", "__", "statements"], "postprocess": 
+        // "PRINT 10; 
+        //  PRINT 20;" -> d = [ null, {...}, "\n", [ {...} ] ]
+        (d) => [d[1], ...d[3]]
+          },
+    {"name": "statement", "symbols": ["variableAssignment"], "postprocess": id},
+    {"name": "statement", "symbols": ["printStatement"], "postprocess": id},
     {"name": "printStatement$string$1", "symbols": [{"literal":"P"}, {"literal":"R"}, {"literal":"I"}, {"literal":"N"}, {"literal":"T"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "printStatement", "symbols": ["printStatement$string$1", "__", "expression", "_", {"literal":";"}], "postprocess": 
         // "PRINT 10;" -> d = [ "PRINT", null, "10", null, ";" ]
@@ -74,7 +84,7 @@ var grammar = {
         (d) => d[0].join("")
           }
 ]
-  , ParserStart: "topLevelStatement"
+  , ParserStart: "program"
 }
 if (typeof module !== 'undefined'&& typeof module.exports !== 'undefined') {
    module.exports = grammar;

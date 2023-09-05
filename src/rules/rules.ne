@@ -1,6 +1,20 @@
 @builtin "whitespace.ne"
 
-topLevelStatement
+program
+  -> statements {% id %}
+
+statements
+  -> _ statement _ {%
+    // "PRINT 10;" -> d = [ null, {...}, null ]
+    (d) => [d[1]]
+  %}
+  |  _ statement __ statements {%
+    // "PRINT 10; 
+    //  PRINT 20;" -> d = [ null, {...}, "\n", [ {...} ] ]
+    (d) => [d[1], ...d[3]]
+  %}
+
+statement
   -> variableAssignment {% id %}
   |  printStatement     {% id %}
 

@@ -1,16 +1,28 @@
 [
-  {
-    "type": "PrintStatement",
-    "value": {
-      "type": "BinaryExpression",
-      "left": 10,
-      "operator": "PLUS",
-      "right": {
+  [
+    {
+      "type": "VariableAssignment",
+      "identifier": "x",
+      "value": 10
+    },
+    {
+      "type": "VariableAssignment",
+      "identifier": "y",
+      "value": 20
+    },
+    {
+      "type": "PrintStatement",
+      "value": {
         "type": "BinaryExpression",
-        "left": 20,
-        "operator": "MUL",
-        "right": 30
+        "left": "x",
+        "operator": "PLUS",
+        "right": {
+          "type": "BinaryExpression",
+          "left": "y",
+          "operator": "MUL",
+          "right": 30
+        }
       }
     }
-  }
+  ]
 ]
