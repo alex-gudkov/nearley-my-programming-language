@@ -134,6 +134,6 @@ var grammar = {
 if (typeof module !== 'undefined'&& typeof module.exports !== 'undefined') {
    module.exports = grammar;
 } else {
-   window.grammar = grammar;
+   window.rules = grammar;
 }
 })();
