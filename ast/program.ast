@@ -1,0 +1,41 @@
+[
+  {
+    "type": "PrintStatement",
+    "value": {
+      "type": "BinaryExpression",
+      "left": {
+        "type": "Literal",
+        "value": 10
+      },
+      "operator": "PLUS",
+      "right": {
+        "type": "BinaryExpression",
+        "left": {
+          "type": "Literal",
+          "value": 20
+        },
+        "operator": "MINUS",
+        "right": {
+          "type": "BinaryExpression",
+          "left": {
+            "type": "Literal",
+            "value": 30
+          },
+          "operator": "TIMES",
+          "right": {
+            "type": "BinaryExpression",
+            "left": {
+              "type": "Literal",
+              "value": 40
+            },
+            "operator": "DIVIDE",
+            "right": {
+              "type": "Literal",
+              "value": 50
+            }
+          }
+        }
+      }
+    }
+  }
+]
