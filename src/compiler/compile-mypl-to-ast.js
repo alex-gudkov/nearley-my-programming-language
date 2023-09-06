@@ -3,11 +3,11 @@ const fsPromises = require('node:fs/promises');
 
 const nearley = require('nearley');
 
-const rules = require('./rules/rules');
+const rules = require('../rules/rules');
 
-async function myplToAst(inputFile, outputFile) {
+async function compileMyplToAst(inputFile, outputFile) {
   // read MyPL file
-  const inputFilePath = path.join(__dirname, '..', inputFile);
+  const inputFilePath = path.join(__dirname, '..', '..', inputFile);
   const inputFileData = await fsPromises.readFile(inputFilePath, { encoding: 'utf8' });
 
   // generate AST
@@ -19,10 +19,10 @@ async function myplToAst(inputFile, outputFile) {
   const ast = parser.results[0];
 
   // write AST file
-  const outputFilePath = path.join(__dirname, '..', outputFile);
+  const outputFilePath = path.join(__dirname, '..', '..', outputFile);
   const outputFileData = JSON.stringify(ast, null, '  ') + '\n';
 
   await fsPromises.writeFile(outputFilePath, outputFileData, { encoding: 'utf-8' });
 }
 
-module.exports = myplToAst;
+module.exports = compileMyplToAst;
