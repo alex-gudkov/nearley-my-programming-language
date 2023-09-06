@@ -2,6 +2,7 @@ const { join, basename } = require('node:path');
 const { readFile, readdir, writeFile } = require('node:fs/promises');
 const nearley = require('nearley');
 const rules = require('./rules/rules');
+const generator = require('./generator/generator');
 
 async function myplToAst() {
   try {
@@ -51,8 +52,8 @@ async function astToJs() {
       const ast = JSON.parse(astFileData);
 
       // generate JS
-      const jsCodeLines = generateJsCodeLinesFromAstStatements(ast);
-      const jsFileData = jsCodeLines.join('');
+      const jsCodeLines = generator.generateJsCodeLinesFromAstStatements(ast);
+      const jsFileData = jsCodeLines.join('\n');
 
       // write JS file data
       const jsFileName = basename(astFileName, '.ast') + '.js';
@@ -62,56 +63,6 @@ async function astToJs() {
     }
   } catch (error) {
     console.error(error);
-  }
-}
-
-/**
- * @param {{type: string, [key: string]: any}[]} astStatements
- * @returns {string[]}
- */
-function generateJsCodeLinesFromAstStatements(astStatements) {
-  const jsCodeLines = [];
-
-  for (const statement of astStatements) {
-    if (statement.type === 'PrintStatement') {
-      const jsValue = generateJsValueFromExpression(statement.value);
-
-      jsCodeLines.push(`console.log(${jsValue});\n`);
-    } else if (statement.type === 'AssignmentStatement') {
-    } else if (statement.type === 'WhileStatement') {
-    }
-  }
-
-  return jsCodeLines;
-}
-
-/**
- * @param {{type: string, [key: string]: any}} expression
- * @returns {string}
- * */
-function generateJsValueFromExpression(expression) {
-  const operatorsMap = {
-    'PLUS': '+',
-    'MINUS': '-',
-    'TIMES': '*',
-    'DIVIDE': '/',
-    'LESS': '<',
-    'GREATER': '>',
-    'EQUAL': '==',
-    'NOT_EQUAL': '!=',
-    'LESS_OR_EQUAL': '<=',
-    'GREATER_OR_EQUAL': '>=',
-  };
-
-  if (expression.type === 'Literal') {
-    return expression.value;
-  } else if (expression.type === 'Identifier') {
-    return expression.name;
-  } else if (expression.type === 'BinaryExpression') {
-    const jsLeftValue = generateJsValueFromExpression(expression.left);
-    const jsRightValue = generateJsValueFromExpression(expression.right);
-
-    return `${jsLeftValue} ${operatorsMap[expression.operator]} ${jsRightValue}`;
   }
 }
 
