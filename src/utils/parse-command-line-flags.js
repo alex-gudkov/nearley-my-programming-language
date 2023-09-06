@@ -1,5 +1,8 @@
 const util = require('node:util');
 
+/**
+ * @returns {{ inputFile: string | null; outputFile: string | null; isMyplToAst: boolean; isAstToJs: boolean; }} The parsed command line flags.
+ */
 function parseCommandLineFlags() {
   const options = {
     'in': {
@@ -42,4 +45,4 @@ function parseCommandLineFlags() {
   };
 }
 
-module.exports = parseCommandLineFlags;
+module.exports = { parseCommandLineFlags };

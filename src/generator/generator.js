@@ -1,6 +1,6 @@
 /**
- * @param {{type: string, [key: string]: any}[]} astStatements AST statements.
- * @returns {string[]} JS code lines.
+ * @param {{type: string, [key: string]: any}[]} astStatements
+ * @returns {string[]} Generated JS code lines.
  */
 function generateJsCodeLinesFromAstStatements(astStatements) {
   const jsCodeLines = [];
@@ -20,7 +20,7 @@ function generateJsCodeLinesFromAstStatements(astStatements) {
 
 /**
  * @param {{type: string, [key: string]: any}} expression
- * @returns {string}
+ * @returns {string} Generated JS value.
  */
 function generateJsValueFromExpression(expression) {
   const operatorsMap = {
@@ -48,7 +48,9 @@ function generateJsValueFromExpression(expression) {
   }
 }
 
-module.exports = {
+const generator = {
   generateJsCodeLinesFromAstStatements,
   generateJsValueFromExpression,
 };
+
+module.exports = generator;

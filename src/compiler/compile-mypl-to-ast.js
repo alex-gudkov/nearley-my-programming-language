@@ -5,6 +5,11 @@ const nearley = require('nearley');
 
 const rules = require('../rules/rules');
 
+/**
+ * @param {string} inputFile
+ * @param {string} outputFile
+ * @returns {Promise<void>}
+ */
 async function compileMyplToAst(inputFile, outputFile) {
   // read MyPL file
   const inputFilePath = path.join(__dirname, '..', '..', inputFile);
@@ -25,4 +30,4 @@ async function compileMyplToAst(inputFile, outputFile) {
   await fsPromises.writeFile(outputFilePath, outputFileData, { encoding: 'utf-8' });
 }
 
-module.exports = compileMyplToAst;
+module.exports = { compileMyplToAst };

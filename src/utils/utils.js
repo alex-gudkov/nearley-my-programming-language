@@ -1,4 +1,4 @@
-const parseCommandLineFlags = require('./parse-command-line-flags');
+const { parseCommandLineFlags } = require('./parse-command-line-flags');
 
 const utils = {
   parseCommandLineFlags,
