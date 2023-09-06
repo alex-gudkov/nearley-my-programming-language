@@ -1,6 +1,7 @@
 const util = require('node:util');
-const { myplToAst } = require('./mypl-to-ast');
-const { astToJs } = require('./ast-to-js');
+
+const myplToAst = require('./mypl-to-ast');
+const astToJs = require('./ast-to-js');
 
 function parseCommandLineFlags() {
   const options = {
@@ -45,14 +46,18 @@ function parseCommandLineFlags() {
 }
 
 async function main() {
-  const flags = parseCommandLineFlags();
+  try {
+    const flags = parseCommandLineFlags();
 
-  if (flags.isMyplToAst) {
-    await myplToAst(flags.inputFile, flags.outputFile);
-  }
+    if (flags.isMyplToAst) {
+      await myplToAst(flags.inputFile, flags.outputFile);
+    }
 
-  if (flags.isAstToJs) {
-    await astToJs(flags.inputFile, flags.outputFile);
+    if (flags.isAstToJs) {
+      await astToJs(flags.inputFile, flags.outputFile);
+    }
+  } catch (error) {
+    console.error(error);
   }
 }
 

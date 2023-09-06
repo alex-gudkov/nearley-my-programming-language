@@ -1,30 +1,28 @@
-const { join } = require('node:path');
-const { readFile, writeFile } = require('node:fs/promises');
+const path = require('node:path');
+const fsPromises = require('node:fs/promises');
+
 const nearley = require('nearley');
+
 const rules = require('./rules/rules');
 
 async function myplToAst(inputFile, outputFile) {
-  try {
-    // read MyPL file
-    const inputFilePath = join(__dirname, '..', inputFile);
-    const inputFileData = await readFile(inputFilePath, { encoding: 'utf8' });
+  // read MyPL file
+  const inputFilePath = path.join(__dirname, '..', inputFile);
+  const inputFileData = await fsPromises.readFile(inputFilePath, { encoding: 'utf8' });
 
-    // generate AST
-    const grammar = nearley.Grammar.fromCompiled(rules);
-    const parser = new nearley.Parser(grammar);
+  // generate AST
+  const grammar = nearley.Grammar.fromCompiled(rules);
+  const parser = new nearley.Parser(grammar);
 
-    parser.feed(inputFileData);
+  parser.feed(inputFileData);
 
-    const ast = parser.results[0];
+  const ast = parser.results[0];
 
-    // write AST file
-    const outputFilePath = join(__dirname, '..', outputFile);
-    const outputFileData = JSON.stringify(ast, null, '  ') + '\n';
+  // write AST file
+  const outputFilePath = path.join(__dirname, '..', outputFile);
+  const outputFileData = JSON.stringify(ast, null, '  ') + '\n';
 
-    await writeFile(outputFilePath, outputFileData, { encoding: 'utf-8' });
-  } catch (error) {
-    console.error(error);
-  }
+  await fsPromises.writeFile(outputFilePath, outputFileData, { encoding: 'utf-8' });
 }
 
-module.exports = { myplToAst };
+module.exports = myplToAst;
