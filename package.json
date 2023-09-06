@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "main": "./src/main.js",
   "scripts": {
-    "nearley-rules:compile": "nearleyc ./src/rules/rules.ne --export rules --out ./src/rules/rules.js",
+    "nearley-rules:compile": "nearleyc ./src/grammar/grammar.ne --out ./src/grammar/grammar.js",
     "mypl-to-ast:compile": "node ./src/main.js --myplToAst --in ./mypl/program.mypl --out ./ast/program.ast ",
     "ast-to-js:compile": "node ./src/main.js --astToJs --in ./ast/program.ast --out ./js/program.js",
     "compile": "npm run mypl-to-ast:compile && npm run ast-to-js:compile"

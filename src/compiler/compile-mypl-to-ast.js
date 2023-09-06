@@ -3,7 +3,7 @@ const fsPromises = require('node:fs/promises');
 
 const nearley = require('nearley');
 
-const rules = require('../rules/rules');
+const grammar = require('../grammar/grammar');
 
 /**
  * @param {string} inputFile
@@ -16,8 +16,7 @@ async function compileMyplToAst(inputFile, outputFile) {
   const inputFileData = await fsPromises.readFile(inputFilePath, { encoding: 'utf8' });
 
   // generate AST
-  const grammar = nearley.Grammar.fromCompiled(rules);
-  const parser = new nearley.Parser(grammar);
+  const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
 
   parser.feed(inputFileData);
 
