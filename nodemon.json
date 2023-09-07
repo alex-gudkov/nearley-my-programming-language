@@ -1,13 +1,14 @@
 {
   "ignore": [
     "./node_modules",
-    "./output",
-    "./src/rules/*.js"
+    "./ast",
+    "./js",
+    "./src/grammar/*.js"
   ],
   "watch": [
     "./src",
-    "./input"
+    "./mypl"
   ],
-  "exec": "npm run rules:compile && npm run start",
+  "exec": "npm run nearley-rules:compile && npm run compile && npm run start",
   "ext": "js, mypl, ne"
 }

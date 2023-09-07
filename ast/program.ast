@@ -1,0 +1,130 @@
+[
+  {
+    "type": "AssignmentStatement",
+    "identifier": {
+      "type": "Identifier",
+      "name": "n"
+    },
+    "value": {
+      "type": "Literal",
+      "value": 10
+    }
+  },
+  {
+    "type": "AssignmentStatement",
+    "identifier": {
+      "type": "Identifier",
+      "name": "i"
+    },
+    "value": {
+      "type": "Literal",
+      "value": 1
+    }
+  },
+  {
+    "type": "AssignmentStatement",
+    "identifier": {
+      "type": "Identifier",
+      "name": "x_prev"
+    },
+    "value": {
+      "type": "Literal",
+      "value": 1
+    }
+  },
+  {
+    "type": "AssignmentStatement",
+    "identifier": {
+      "type": "Identifier",
+      "name": "x_prev_prev"
+    },
+    "value": {
+      "type": "Literal",
+      "value": 1
+    }
+  },
+  {
+    "type": "WhileStatement",
+    "condition": {
+      "type": "BinaryExpression",
+      "left": {
+        "type": "Identifier",
+        "name": "i"
+      },
+      "operator": "LESS_OR_EQUAL",
+      "right": {
+        "type": "Identifier",
+        "name": "n"
+      }
+    },
+    "body": [
+      {
+        "type": "PrintStatement",
+        "value": {
+          "type": "Identifier",
+          "name": "x_prev"
+        }
+      },
+      {
+        "type": "AssignmentStatement",
+        "identifier": {
+          "type": "Identifier",
+          "name": "x"
+        },
+        "value": {
+          "type": "BinaryExpression",
+          "left": {
+            "type": "Identifier",
+            "name": "x_prev"
+          },
+          "operator": "PLUS",
+          "right": {
+            "type": "Identifier",
+            "name": "x_prev_prev"
+          }
+        }
+      },
+      {
+        "type": "AssignmentStatement",
+        "identifier": {
+          "type": "Identifier",
+          "name": "x_prev"
+        },
+        "value": {
+          "type": "Identifier",
+          "name": "x_prev_prev"
+        }
+      },
+      {
+        "type": "AssignmentStatement",
+        "identifier": {
+          "type": "Identifier",
+          "name": "x_prev_prev"
+        },
+        "value": {
+          "type": "Identifier",
+          "name": "x"
+        }
+      },
+      {
+        "type": "AssignmentStatement",
+        "identifier": {
+          "type": "Identifier",
+          "name": "i"
+        },
+        "value": {
+          "type": "BinaryExpression",
+          "left": {
+            "type": "Identifier",
+            "name": "i"
+          },
+          "operator": "PLUS",
+          "right": {
+            "type": "Literal",
+            "value": 1
+          }
+        }
+      }
+    ]
+  }
+]

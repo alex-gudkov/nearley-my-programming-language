@@ -1,0 +1,15 @@
+n ASSIGN 10
+i ASSIGN 1
+
+x_prev ASSIGN 1
+x_prev_prev ASSIGN 1
+
+WHILE i LESS_OR_EQUAL n BEGIN
+    PRINT x_prev
+
+    x ASSIGN x_prev PLUS x_prev_prev
+    x_prev ASSIGN x_prev_prev
+    x_prev_prev ASSIGN x
+
+    i ASSIGN i PLUS 1
+END
