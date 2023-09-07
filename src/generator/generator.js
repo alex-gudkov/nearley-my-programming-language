@@ -12,47 +12,58 @@ const BINARY_OPERATORS_MAP = {
 };
 
 /**
- * @param {{type: string, [key: string]: any}[]} astStatements
- * @returns {string[]} Generated JS code lines.
+ * @param {{type: string, [key: string]: any}[]} statements
+ * @returns {string} Generated JS statements.
  */
-function generateJsCodeLinesFromAstStatements(astStatements) {
-  const jsCodeLines = [];
+function generateJsStatements(astStatements) {
+  let jsStatements = '';
 
-  for (const statement of astStatements) {
-    if (statement.type === 'PrintStatement') {
-      const jsValue = generateJsValueFromExpression(statement.value);
+  for (const astStatement of astStatements) {
+    if (astStatement.type === 'PrintStatement') {
+      const jsValueExpression = generateJsExpression(astStatement.value);
 
-      jsCodeLines.push(`console.log(${jsValue});`);
-    } else if (statement.type === 'AssignmentStatement') {
-      //
-    } else if (statement.type === 'WhileStatement') {
-      //
+      jsStatements += `console.log(${jsValueExpression});\n`;
+    } else if (astStatement.type === 'AssignmentStatement') {
+      const jsValueExpression = generateJsExpression(astStatement.value);
+      const jsIdentifier = astStatement.identifier.name;
+
+      jsStatements += `let ${jsIdentifier} = ${jsValueExpression};\n`;
+    } else if (astStatement.type === 'WhileStatement') {
+      const jsConditionExpression = generateJsExpression(astStatement.condition);
+      const jsBodyStatements = generateJsStatements(astStatement.body);
+
+      jsStatements += `while (${jsConditionExpression}) {\n${jsBodyStatements}}\n`;
     }
   }
 
-  return jsCodeLines;
+  return jsStatements;
 }
 
 /**
- * @param {{type: string, [key: string]: any}} expression
- * @returns {string} Generated JS value.
+ * @param {{type: string, [key: string]: any}} astExpression
+ * @returns {string} Generated JS expression.
  */
-function generateJsValueFromExpression(expression) {
-  if (expression.type === 'Literal') {
-    return expression.value;
-  } else if (expression.type === 'Identifier') {
-    return expression.name;
-  } else if (expression.type === 'BinaryExpression') {
-    const jsLeftValue = generateJsValueFromExpression(expression.left);
-    const jsRightValue = generateJsValueFromExpression(expression.right);
+function generateJsExpression(astExpression) {
+  let jsExpression;
 
-    return `${jsLeftValue} ${BINARY_OPERATORS_MAP[expression.operator]} ${jsRightValue}`;
+  if (astExpression.type === 'Literal') {
+    jsExpression = astExpression.value;
+  } else if (astExpression.type === 'Identifier') {
+    jsExpression = astExpression.name;
+  } else if (astExpression.type === 'BinaryExpression') {
+    const jsLeftExpression = generateJsExpression(astExpression.left);
+    const jsRightExpression = generateJsExpression(astExpression.right);
+    const jsOperator = BINARY_OPERATORS_MAP[astExpression.operator];
+
+    jsExpression = `${jsLeftExpression} ${jsOperator} ${jsRightExpression}`;
   }
+
+  return jsExpression;
 }
 
 const generator = {
-  generateJsCodeLinesFromAstStatements,
-  generateJsValueFromExpression,
+  generateJsStatements,
+  generateJsExpression,
 };
 
 module.exports = generator;

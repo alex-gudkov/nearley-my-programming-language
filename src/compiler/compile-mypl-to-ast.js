@@ -20,11 +20,11 @@ async function compileMyplToAst(inputFile, outputFile) {
 
   parser.feed(inputFileData);
 
-  const ast = parser.results[0];
+  const abstractSyntaxTree = parser.results[0];
 
   // write AST file
   const outputFilePath = path.join(__dirname, '..', '..', outputFile);
-  const outputFileData = JSON.stringify(ast, null, '  ') + '\n';
+  const outputFileData = JSON.stringify(abstractSyntaxTree, null, '  ') + '\n';
 
   await fsPromises.writeFile(outputFilePath, outputFileData, { encoding: 'utf-8' });
 }

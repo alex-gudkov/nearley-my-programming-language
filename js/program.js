@@ -1,1 +1,5 @@
-console.log(10 + 20 - 30 * 40 / 50);
+let x = 10;
+while (x < 10) {
+console.log(x);
+let x = x + 1;
+}

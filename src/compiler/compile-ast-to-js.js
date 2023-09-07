@@ -14,12 +14,12 @@ async function compileAstToJs(inputFile, outputFile) {
   const inputFileData = await fsPromises.readFile(inputFilePath, { encoding: 'utf8' });
 
   // generate JS code
-  const ast = JSON.parse(inputFileData);
-  const jsCodeLines = generator.generateJsCodeLinesFromAstStatements(ast);
+  const abstractSyntaxTree = JSON.parse(inputFileData);
+  const jsCodeLines = generator.generateJsStatements(abstractSyntaxTree);
 
   // write JS file
   const outputFilePath = path.join(__dirname, '..', '..', outputFile);
-  const outputFileData = jsCodeLines.join('\n');
+  const outputFileData = jsCodeLines;
 
   await fsPromises.writeFile(outputFilePath, outputFileData, { encoding: 'utf-8' });
 }

@@ -1,41 +1,56 @@
 [
   {
-    "type": "PrintStatement",
+    "type": "AssignmentStatement",
+    "identifier": {
+      "type": "Identifier",
+      "name": "x"
+    },
     "value": {
+      "type": "Literal",
+      "value": 10
+    }
+  },
+  {
+    "type": "WhileStatement",
+    "condition": {
       "type": "BinaryExpression",
       "left": {
+        "type": "Identifier",
+        "name": "x"
+      },
+      "operator": "LESS",
+      "right": {
         "type": "Literal",
         "value": 10
+      }
+    },
+    "body": [
+      {
+        "type": "PrintStatement",
+        "value": {
+          "type": "Identifier",
+          "name": "x"
+        }
       },
-      "operator": "PLUS",
-      "right": {
-        "type": "BinaryExpression",
-        "left": {
-          "type": "Literal",
-          "value": 20
+      {
+        "type": "AssignmentStatement",
+        "identifier": {
+          "type": "Identifier",
+          "name": "x"
         },
-        "operator": "MINUS",
-        "right": {
+        "value": {
           "type": "BinaryExpression",
           "left": {
-            "type": "Literal",
-            "value": 30
+            "type": "Identifier",
+            "name": "x"
           },
-          "operator": "TIMES",
+          "operator": "PLUS",
           "right": {
-            "type": "BinaryExpression",
-            "left": {
-              "type": "Literal",
-              "value": 40
-            },
-            "operator": "DIVIDE",
-            "right": {
-              "type": "Literal",
-              "value": 50
-            }
+            "type": "Literal",
+            "value": 1
           }
         }
       }
-    }
+    ]
   }
 ]
