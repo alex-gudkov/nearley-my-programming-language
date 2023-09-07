@@ -11,15 +11,17 @@ const BINARY_OPERATORS_MAP = {
   'GREATER_OR_EQUAL': '>=',
 };
 
+const DEFAULT_INDENT_SIZE = 2;
+
 /**
  * @param {string} jsStatements
  * @returns {string} Indented JS statements.
  */
-function indentJsStatements(jsStatements) {
+function indentJsStatements(jsStatements, indentSize = DEFAULT_INDENT_SIZE) {
   return jsStatements
     .trim()
     .split('\n')
-    .map((statement) => '  ' + statement)
+    .map((statement) => ' '.repeat(indentSize) + statement)
     .join('\n')
     .concat('\n');
 }
