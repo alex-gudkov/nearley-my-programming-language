@@ -12,6 +12,19 @@ const BINARY_OPERATORS_MAP = {
 };
 
 /**
+ * @param {string} jsStatements
+ * @returns {string} Indented JS statements.
+ */
+function indentJsStatements(jsStatements) {
+  return jsStatements
+    .trim()
+    .split('\n')
+    .map((statement) => '  ' + statement)
+    .join('\n')
+    .concat('\n');
+}
+
+/**
  * @param {{type: string, [key: string]: any}[]} statements
  * @returns {string} Generated JS statements.
  */
@@ -31,8 +44,9 @@ function generateJsStatements(astStatements) {
     } else if (astStatement.type === 'WhileStatement') {
       const jsConditionExpression = generateJsExpression(astStatement.condition);
       const jsBodyStatements = generateJsStatements(astStatement.body);
+      const jsBodyStatementsIndented = indentJsStatements(jsBodyStatements);
 
-      jsStatements += `while (${jsConditionExpression}) {\n${jsBodyStatements}}\n`;
+      jsStatements += `while (${jsConditionExpression}) {\n${jsBodyStatementsIndented}}\n`;
     }
   }
 
