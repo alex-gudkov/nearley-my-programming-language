@@ -28,9 +28,10 @@ function indentJsStatements(jsStatements, indentSize = DEFAULT_INDENT_SIZE) {
 
 /**
  * @param {{type: string, [key: string]: any}[]} statements
+ * @param {{[key: string]: boolean}} declaredVariablesMap
  * @returns {string} Generated JS statements.
  */
-function generateJsStatements(astStatements) {
+function generateJsStatements(astStatements, declaredVariablesMap = {}) {
   let jsStatements = '';
 
   for (const astStatement of astStatements) {
@@ -42,10 +43,15 @@ function generateJsStatements(astStatements) {
       const jsValueExpression = generateJsExpression(astStatement.value);
       const jsIdentifier = astStatement.identifier.name;
 
-      jsStatements += `let ${jsIdentifier} = ${jsValueExpression};\n`;
+      if (declaredVariablesMap[jsIdentifier]) {
+        jsStatements += `${jsIdentifier} = ${jsValueExpression};\n`;
+      } else {
+        jsStatements += `let ${jsIdentifier} = ${jsValueExpression};\n`;
+        declaredVariablesMap[jsIdentifier] = true;
+      }
     } else if (astStatement.type === 'WhileStatement') {
       const jsConditionExpression = generateJsExpression(astStatement.condition);
-      const jsBodyStatements = generateJsStatements(astStatement.body);
+      const jsBodyStatements = generateJsStatements(astStatement.body, declaredVariablesMap);
       const jsBodyStatementsIndented = indentJsStatements(jsBodyStatements);
 
       jsStatements += `while (${jsConditionExpression}) {\n${jsBodyStatementsIndented}}\n`;
