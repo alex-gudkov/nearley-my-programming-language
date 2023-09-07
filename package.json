@@ -10,7 +10,8 @@
     "nearley-rules:compile": "nearleyc ./src/grammar/grammar.ne --out ./src/grammar/grammar.js",
     "mypl-to-ast:compile": "node ./src/main.js --myplToAst --in ./mypl/program.mypl --out ./ast/program.ast ",
     "ast-to-js:compile": "node ./src/main.js --astToJs --in ./ast/program.ast --out ./js/program.js",
-    "compile": "npm run mypl-to-ast:compile && npm run ast-to-js:compile"
+    "compile": "npm run mypl-to-ast:compile && npm run ast-to-js:compile",
+    "start": "node ./js/program.js"
   },
   "dependencies": {
     "nearley": "^2.20.1"
